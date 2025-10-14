@@ -7,6 +7,9 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import { incrementCounter } from "@/lib/counter";
 
+// Force dynamic rendering on every request
+export const dynamic = "force-dynamic";
+
 export default function SSRPage() {
   // This runs on every request - fresh timestamp every time
   const timestamp = new Date().toISOString();
@@ -47,7 +50,9 @@ export default function SSRPage() {
           <div className="bg-muted p-3 rounded-lg">
             <p className="text-xs font-semibold mb-2">Code Example:</p>
             <pre className="text-[10px] leading-tight">
-              <code>{`export default function Page() {
+              <code>{`export const dynamic = 'force-dynamic'
+
+export default function Page() {
   const data = new Date().toISOString()
   return <div>{data}</div>
 }`}</code>
