@@ -1,103 +1,125 @@
-import Image from "next/image";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { ThemeToggle } from "@/components/theme-toggle";
+import Link from "next/link";
+
+const patterns = [
+  {
+    title: "SSR",
+    fullName: "Server-Side Rendering",
+    description: "HTML is built on every request",
+    icon: "🖥️",
+    color: "bg-chart-1/10 text-chart-1 border-chart-1",
+    pros: ["Fresh data every time", "SEO-friendly"],
+    cons: ["Slower TTFB", "More server load"],
+    useCases: "Dashboards, personalized pages, authenticated routes",
+    path: "/ssr",
+  },
+  {
+    title: "SSG",
+    fullName: "Static Site Generation",
+    description: "HTML built once at build time, then cached",
+    icon: "⚡",
+    color: "bg-chart-2/10 text-chart-2 border-chart-2",
+    pros: ["Fastest load", "Served via CDN"],
+    cons: ["Outdated data until next build"],
+    useCases: "Blogs, docs, marketing pages",
+    path: "/ssg",
+  },
+  {
+    title: "ISR",
+    fullName: "Incremental Static Regeneration",
+    description: "Middle ground: rebuild pages that get traffic",
+    icon: "🔄",
+    color: "bg-chart-5/10 text-chart-5 border-chart-5",
+    pros: ["Static speed + dynamic freshness"],
+    cons: ["Slightly stale data window"],
+    useCases: "E-commerce, feeds, landing pages",
+    path: "/isr",
+  },
+  {
+    title: "CSR",
+    fullName: "Client-Side Rendering",
+    description: "HTML shell + JS does everything after load",
+    icon: "💻",
+    color: "bg-chart-4/10 text-chart-4 border-chart-4",
+    pros: ["Flexible", "Fully interactive"],
+    cons: ["Slow first load", "Bad SEO"],
+    useCases: "Dashboards, internal tools",
+    path: "/csr",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="container mx-auto py-4 px-4 max-w-6xl min-h-screen flex flex-col">
+      <div className="flex justify-between items-center mb-3">
+        <h1 className="text-3xl font-bold">Next.js Rendering Modes</h1>
+        <ThemeToggle />
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      <p className="text-sm text-muted-foreground mb-4 text-center">
+        SSR, SSG, ISR, and CSR - Choose the right pattern for your app
+      </p>
+
+      <Separator className="mb-4" />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1">
+        {patterns.map((pattern) => (
+          <Card
+            key={pattern.title}
+            className="hover:shadow-lg transition-shadow flex flex-col"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+            <CardHeader className="pb-2">
+              <div className="flex items-start justify-between mb-1">
+                <div className="text-2xl">{pattern.icon}</div>
+                <Badge className={pattern.color} variant="outline">
+                  {pattern.title}
+                </Badge>
+              </div>
+              <CardTitle className="text-lg">{pattern.fullName}</CardTitle>
+              <CardDescription className="text-xs">
+                {pattern.description}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2 flex-1 flex flex-col">
+              <div className="text-xs space-y-1 flex-1">
+                <div className="flex items-start gap-1">
+                  <span className="text-green-600 dark:text-green-400">✓</span>
+                  <p className="text-muted-foreground">
+                    {pattern.pros.join(" • ")}
+                  </p>
+                </div>
+                <div className="flex items-start gap-1">
+                  <span className="text-orange-600 dark:text-orange-400">
+                    ✗
+                  </span>
+                  <p className="text-muted-foreground">
+                    {pattern.cons.join(" • ")}
+                  </p>
+                </div>
+                <p className="text-muted-foreground pt-1">
+                  <span className="font-medium">Use:</span> {pattern.useCases}
+                </p>
+              </div>
+
+              <Link href={pattern.path} className="block">
+                <Button className="w-full" size="sm">
+                  View Demo →
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
