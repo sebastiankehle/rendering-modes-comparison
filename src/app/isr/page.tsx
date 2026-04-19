@@ -15,7 +15,7 @@ export default function ISRPage() {
       <TopBar path="isr" />
       <DemoHero pattern="isr" />
 
-      <div className="grid grid-cols-1 gap-4 pb-10 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 pb-6 lg:grid-cols-2">
         <div className="space-y-4">
           <Section label="pattern">
             <PatternInfo

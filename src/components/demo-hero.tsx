@@ -9,8 +9,8 @@ const order: Pattern[] = ["ssr", "ssg", "isr", "csr"];
 export function DemoHero({ pattern }: { pattern: Pattern }) {
   const meta = patternMeta[pattern];
   return (
-    <section className="flex flex-col gap-6 py-8 md:flex-row md:items-end md:justify-between">
-      <div className="space-y-3">
+    <section className="flex flex-col gap-4 py-4 md:flex-row md:items-end md:justify-between md:py-5">
+      <div className="space-y-2">
         <Link
           href="/"
           className="inline-flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground transition-colors hover:text-foreground"
@@ -25,7 +25,7 @@ export function DemoHero({ pattern }: { pattern: Pattern }) {
             / {meta.name.toLowerCase()}
           </span>
         </div>
-        <h1 className="max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
+        <h1 className="max-w-2xl text-xl font-semibold tracking-tight sm:text-2xl">
           {meta.tagline}
         </h1>
         <code className="inline-block border border-border bg-muted/50 px-2 py-1 font-mono text-[11px] text-foreground">
