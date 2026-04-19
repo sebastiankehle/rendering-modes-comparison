@@ -20,27 +20,45 @@ export default function CSRPage() {
   return (
     <Shell>
       <TopBar path="csr" />
-      <DemoHero pattern="csr" />
+      <main className="flex flex-1 flex-col gap-3 pb-4">
+        <DemoHero pattern="csr" />
 
-      <div className="grid grid-cols-1 gap-3 pb-6 lg:grid-cols-2">
-        <div className="space-y-4">
-          <Section label="pattern">
-            <PatternInfo
-              pattern="csr"
-              pros={["highly interactive", "rich ux"]}
-              cons={["slower first paint", "weaker seo"]}
-              useCases={["dashboards", "web apps", "admin panels"]}
-            />
-          </Section>
+        <div className="grid flex-1 grid-cols-1 gap-3 lg:grid-cols-2">
+          <div className="flex flex-col gap-3">
+            <Section label="pattern">
+              <PatternInfo
+                pattern="csr"
+                pros={["highly interactive", "rich ux"]}
+                cons={["slower first paint", "weaker seo"]}
+                useCases={["dashboards", "web apps", "admin panels"]}
+              />
+            </Section>
 
-          <Section label="flow" title="shell → js → paint">
-            <FlowDiagram pattern="csr" />
-          </Section>
+            <Section label="flow" title="shell → js → paint">
+              <FlowDiagram pattern="csr" />
+            </Section>
+          </div>
 
-          <Section label="source" title="app/csr/page.tsx">
-            <CodeBlock
-              filename="app/csr/page.tsx"
-              code={`'use client'
+          <div className="flex flex-col gap-3">
+            <Section label="live" title="rendered in the browser">
+              {mounted ? (
+                <RenderingDemo
+                  pattern="csr"
+                  timestamp={timestamp}
+                  renderLocation="client"
+                />
+              ) : (
+                <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+                  <span className="inline-block size-1.5 animate-pulse rounded-full bg-muted-foreground" />
+                  hydrating…
+                </div>
+              )}
+            </Section>
+
+            <Section label="source" title="app/csr/page.tsx">
+              <CodeBlock
+                filename="app/csr/page.tsx"
+                code={`'use client'
 import { useState, useEffect } from 'react'
 
 export default function Page() {
@@ -50,34 +68,18 @@ export default function Page() {
   }, [])
   return <div>{data}</div>
 }`}
-            />
-          </Section>
-        </div>
-
-        <div className="space-y-4">
-          <Section label="live" title="rendered in the browser">
-            {mounted ? (
-              <RenderingDemo
-                pattern="csr"
-                timestamp={timestamp}
-                renderLocation="client"
               />
-            ) : (
-              <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
-                <span className="inline-block size-1.5 animate-pulse rounded-full bg-muted-foreground" />
-                hydrating…
-              </div>
-            )}
-          </Section>
+            </Section>
 
-          <Section label="hint">
-            <p className="font-mono text-[11px] leading-relaxed text-muted-foreground">
-              view source: the timestamp is absent from initial html — javascript
-              fills it after hydration.
-            </p>
-          </Section>
+            <Section label="hint">
+              <p className="font-mono text-[11px] leading-relaxed text-muted-foreground">
+                view source: the timestamp is absent from initial html —
+                javascript fills it after hydration.
+              </p>
+            </Section>
+          </div>
         </div>
-      </div>
+      </main>
     </Shell>
   );
 }

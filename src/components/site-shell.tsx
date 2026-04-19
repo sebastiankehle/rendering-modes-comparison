@@ -86,7 +86,9 @@ export function TopBar({ path }: { path?: string }) {
 
 export function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mx-auto min-h-screen max-w-6xl px-4">{children}</div>
+    <div className="mx-auto flex min-h-svh max-w-6xl flex-col px-4">
+      {children}
+    </div>
   );
 }
 
@@ -108,7 +110,7 @@ export function Section({
         className
       )}
     >
-      <div className="flex items-center justify-between border-b border-border px-3 py-2">
+      <div className="flex items-center justify-between border-b border-border px-3 py-1.5">
         <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
           {label}
         </span>

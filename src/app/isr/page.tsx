@@ -13,54 +13,57 @@ export default function ISRPage() {
   return (
     <Shell>
       <TopBar path="isr" />
-      <DemoHero pattern="isr" />
+      <main className="flex flex-1 flex-col gap-3 pb-4">
+        <DemoHero pattern="isr" />
 
-      <div className="grid grid-cols-1 gap-3 pb-6 lg:grid-cols-2">
-        <div className="space-y-4">
-          <Section label="pattern">
-            <PatternInfo
-              pattern="isr"
-              pros={["fast + fresh", "cdn-cached"]}
-              cons={["slight staleness", "more moving parts"]}
-              useCases={["ecommerce", "news", "feeds"]}
-            />
-          </Section>
+        <div className="grid flex-1 grid-cols-1 gap-3 lg:grid-cols-2">
+          <div className="flex flex-col gap-3">
+            <Section label="pattern">
+              <PatternInfo
+                pattern="isr"
+                pros={["fast + fresh", "cdn-cached"]}
+                cons={["slight staleness", "more moving parts"]}
+                useCases={["ecommerce", "news", "feeds"]}
+              />
+            </Section>
 
-          <Section label="flow" title="cached → background rebuild">
-            <FlowDiagram pattern="isr" />
-          </Section>
+            <Section label="flow" title="cached → background rebuild">
+              <FlowDiagram pattern="isr" />
+            </Section>
+          </div>
 
-          <Section label="source" title="app/isr/page.tsx">
-            <CodeBlock
-              filename="app/isr/page.tsx"
-              code={`export const revalidate = 10
+          <div className="flex flex-col gap-3">
+            <Section label="live" title="revalidates every 10s">
+              <RenderingDemo
+                pattern="isr"
+                timestamp={timestamp}
+                buildTime={timestamp}
+                renderLocation="hybrid"
+              />
+            </Section>
+
+            <Section label="source" title="app/isr/page.tsx">
+              <CodeBlock
+                filename="app/isr/page.tsx"
+                code={`export const revalidate = 10
 
 export default function Page() {
   const data = new Date().toISOString()
   return <div>{data}</div>
 }`}
-            />
-          </Section>
-        </div>
+              />
+            </Section>
 
-        <div className="space-y-4">
-          <Section label="live" title="revalidates every 10s">
-            <RenderingDemo
-              pattern="isr"
-              timestamp={timestamp}
-              buildTime={timestamp}
-              renderLocation="hybrid"
-            />
-          </Section>
-
-          <Section label="hint">
-            <p className="font-mono text-[11px] leading-relaxed text-muted-foreground">
-              production only: rapid refreshes hit the cache. wait 10 seconds,
-              refresh again — a fresh render lands in the background.
-            </p>
-          </Section>
+            <Section label="hint">
+              <p className="font-mono text-[11px] leading-relaxed text-muted-foreground">
+                production only: rapid refreshes hit the cache. wait 10
+                seconds, refresh again — a fresh render lands in the
+                background.
+              </p>
+            </Section>
+          </div>
         </div>
-      </div>
+      </main>
     </Shell>
   );
 }

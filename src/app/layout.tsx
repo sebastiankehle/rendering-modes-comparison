@@ -13,10 +13,25 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const title = "rendering-modes — ssr · ssg · isr · csr";
+const description =
+  "A minimalist side-by-side demo of the four Next.js rendering modes: SSR, SSG, ISR, and CSR.";
+
 export const metadata: Metadata = {
-  title: "rendering-modes — ssr · ssg · isr · csr",
-  description:
-    "A minimalist side-by-side demo of the four Next.js rendering modes: SSR, SSG, ISR, and CSR.",
+  metadataBase: new URL("https://rendering-modes.vercel.app"),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    siteName: "rendering-modes",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 export default function RootLayout({

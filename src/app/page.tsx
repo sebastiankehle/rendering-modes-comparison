@@ -108,30 +108,33 @@ export default function Home() {
           <Link
             key={p.key}
             href={`/${p.key}`}
-            className="group relative flex flex-col border border-border bg-card/60 p-3 transition-colors hover:bg-accent/40"
+            className="group relative flex flex-col gap-4 border border-border bg-card/60 p-3 transition-colors hover:bg-accent/40"
           >
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-2 font-mono text-xs">
-                <PatternDot pattern={p.key} />
-                <span className={p.fgClass}>{p.label}</span>
-                <span className="hidden text-muted-foreground sm:inline">
-                  — {p.name}
-                </span>
+            <div className="space-y-2">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-2 font-mono text-xs">
+                  <PatternDot pattern={p.key} />
+                  <span className={p.fgClass}>{p.label}</span>
+                  <span className="hidden text-muted-foreground sm:inline">
+                    — {p.name}
+                  </span>
+                </div>
+                <ArrowUpRight
+                  className="size-3.5 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  strokeWidth={1.5}
+                />
               </div>
-              <ArrowUpRight
-                className="size-3.5 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                strokeWidth={1.5}
-              />
+              <p className="min-h-[2.5rem] text-xs leading-relaxed text-foreground/85">
+                {p.tagline}
+              </p>
             </div>
 
-            <p className="mt-2 text-xs text-foreground/85">{p.tagline}</p>
-
-            <div className="mt-2 grid grid-cols-2 gap-3 font-mono text-[11px]">
+            <div className="flex-1 space-y-3 font-mono text-[11px]">
               <div>
-                <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                <div className="mb-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                   pros
                 </div>
-                <ul className="mt-0.5 space-y-0.5">
+                <ul className="space-y-1">
                   {p.pros.map((x) => (
                     <li key={x} className="flex gap-1.5">
                       <span className="text-emerald-600 dark:text-emerald-400">
@@ -143,10 +146,10 @@ export default function Home() {
                 </ul>
               </div>
               <div>
-                <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                <div className="mb-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                   cons
                 </div>
-                <ul className="mt-0.5 space-y-0.5">
+                <ul className="space-y-1">
                   {p.cons.map((x) => (
                     <li key={x} className="flex gap-1.5">
                       <span className="text-amber-600 dark:text-amber-400">
@@ -159,7 +162,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mt-auto border-t border-dashed border-border pt-2 font-mono text-[10px] text-muted-foreground">
+            <div className="border-t border-dashed border-border pt-2 font-mono text-[10px] leading-relaxed text-muted-foreground">
               {p.use}
             </div>
           </Link>
