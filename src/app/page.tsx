@@ -111,16 +111,16 @@ export default function Home() {
             className="group relative flex flex-col gap-4 border border-border bg-card/60 p-3 transition-colors hover:bg-accent/40"
           >
             <div className="space-y-2">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2 font-mono text-xs">
-                  <PatternDot pattern={p.key} />
-                  <span className={p.fgClass}>{p.label}</span>
-                  <span className="hidden text-muted-foreground sm:inline">
-                    — {p.name}
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex min-h-[3rem] flex-col gap-1 font-mono text-xs">
+                  <span className="flex items-center gap-2">
+                    <PatternDot pattern={p.key} />
+                    <span className={p.fgClass}>{p.label}</span>
                   </span>
+                  <span className="text-muted-foreground">{p.name}</span>
                 </div>
                 <ArrowUpRight
-                  className="size-3.5 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  className="size-3.5 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                   strokeWidth={1.5}
                 />
               </div>
