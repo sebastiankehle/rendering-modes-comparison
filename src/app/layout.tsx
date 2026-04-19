@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Rendering Modes Comparison",
+  title: "rendering-modes — ssr · ssg · isr · csr",
   description:
-    "An educational demo comparing SSR, SSG, ISR, and CSR rendering patterns in Next.js",
+    "A minimalist side-by-side demo of the four Next.js rendering modes: SSR, SSG, ISR, and CSR.",
 };
 
 export default function RootLayout({
@@ -27,11 +27,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

@@ -1,125 +1,194 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import {
+  Section,
+  Shell,
+  TopBar,
+  patternMeta,
+  PatternDot,
+} from "@/components/site-shell";
 
-const patterns = [
-  {
-    title: "SSR",
-    fullName: "Server-Side Rendering",
-    description: "HTML is built on every request",
-    icon: "🖥️",
-    color: "bg-chart-1/10 text-chart-1 border-chart-1",
-    pros: ["Fresh data every time", "SEO-friendly"],
-    cons: ["Slower TTFB", "More server load"],
-    useCases: "Dashboards, personalized pages, authenticated routes",
-    path: "/ssr",
+const summary = {
+  ssr: {
+    pros: ["fresh data per request", "seo-friendly"],
+    cons: ["slower ttfb", "higher server load"],
+    use: "dashboards · personalized pages · auth routes",
   },
-  {
-    title: "SSG",
-    fullName: "Static Site Generation",
-    description: "HTML built once at build time, then cached",
-    icon: "⚡",
-    color: "bg-chart-2/10 text-chart-2 border-chart-2",
-    pros: ["Fastest load", "Served via CDN"],
-    cons: ["Outdated data until next build"],
-    useCases: "Blogs, docs, marketing pages",
-    path: "/ssg",
+  ssg: {
+    pros: ["fastest load", "served via cdn"],
+    cons: ["stale until next build"],
+    use: "blogs · docs · marketing pages",
   },
-  {
-    title: "ISR",
-    fullName: "Incremental Static Regeneration",
-    description: "Middle ground: rebuild pages that get traffic",
-    icon: "🔄",
-    color: "bg-chart-5/10 text-chart-5 border-chart-5",
-    pros: ["Static speed + dynamic freshness"],
-    cons: ["Slightly stale data window"],
-    useCases: "E-commerce, feeds, landing pages",
-    path: "/isr",
+  isr: {
+    pros: ["static speed", "dynamic freshness"],
+    cons: ["slight staleness window"],
+    use: "ecommerce · feeds · landing pages",
   },
-  {
-    title: "CSR",
-    fullName: "Client-Side Rendering",
-    description: "HTML shell + JS does everything after load",
-    icon: "💻",
-    color: "bg-chart-4/10 text-chart-4 border-chart-4",
-    pros: ["Flexible", "Fully interactive"],
-    cons: ["Slow first load", "Bad SEO"],
-    useCases: "Dashboards, internal tools",
-    path: "/csr",
+  csr: {
+    pros: ["flexible", "fully interactive"],
+    cons: ["slower first paint", "weaker seo"],
+    use: "dashboards · internal tools · rich apps",
   },
-];
+} as const;
 
 export default function Home() {
+  const patterns = (["ssr", "ssg", "isr", "csr"] as const).map((k) => ({
+    ...patternMeta[k],
+    ...summary[k],
+  }));
+
   return (
-    <div className="container mx-auto py-4 px-4 max-w-6xl min-h-screen flex flex-col">
-      <div className="flex justify-between items-center mb-3">
-        <h1 className="text-3xl font-bold">Next.js Rendering Modes</h1>
-        <ThemeToggle />
-      </div>
+    <Shell>
+      <TopBar />
 
-      <p className="text-sm text-muted-foreground mb-4 text-center">
-        SSR, SSG, ISR, and CSR - Choose the right pattern for your app
-      </p>
+      <section className="grid grid-cols-1 gap-6 py-10 md:grid-cols-[1.1fr_1fr] md:py-16">
+        <div className="space-y-5">
+          <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+            <span className="size-1.5 rounded-full bg-emerald-500" />
+            next.js 15 · app router
+          </span>
+          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+            Four rendering modes.
+            <br />
+            <span className="text-muted-foreground">One side-by-side.</span>
+          </h1>
+          <p className="max-w-prose text-sm leading-relaxed text-muted-foreground">
+            A minimalist demo of{" "}
+            <span className="font-mono text-foreground">ssr</span>,{" "}
+            <span className="font-mono text-foreground">ssg</span>,{" "}
+            <span className="font-mono text-foreground">isr</span>, and{" "}
+            <span className="font-mono text-foreground">csr</span>. Live
+            timestamps, request counters, and annotated flow — so the tradeoffs
+            show themselves.
+          </p>
+          <div className="flex items-center gap-3 font-mono text-xs text-muted-foreground">
+            <span>run</span>
+            <code className="border border-border bg-muted/50 px-2 py-1 text-foreground">
+              npm run build &amp;&amp; npm start
+            </code>
+            <span className="hidden sm:inline">to see real behavior</span>
+          </div>
+        </div>
 
-      <Separator className="mb-4" />
+        <div className="border border-border bg-card/60 p-4 font-mono text-[11px]">
+          <div className="mb-2 flex items-center justify-between text-muted-foreground">
+            <span>rendering.matrix</span>
+            <span>4 × 3</span>
+          </div>
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="text-left text-muted-foreground">
+                <th className="py-1 font-normal">mode</th>
+                <th className="py-1 font-normal">runs</th>
+                <th className="py-1 pr-0 text-right font-normal">cache</th>
+              </tr>
+            </thead>
+            <tbody className="[&>tr>td]:border-t [&>tr>td]:border-border/60 [&>tr>td]:py-1.5">
+              <tr>
+                <td className="flex items-center gap-2">
+                  <PatternDot pattern="ssr" /> ssr
+                </td>
+                <td>per request</td>
+                <td className="text-right text-muted-foreground">none</td>
+              </tr>
+              <tr>
+                <td className="flex items-center gap-2">
+                  <PatternDot pattern="ssg" /> ssg
+                </td>
+                <td>build time</td>
+                <td className="text-right text-muted-foreground">forever</td>
+              </tr>
+              <tr>
+                <td className="flex items-center gap-2">
+                  <PatternDot pattern="isr" /> isr
+                </td>
+                <td>on interval</td>
+                <td className="text-right text-muted-foreground">10s</td>
+              </tr>
+              <tr>
+                <td className="flex items-center gap-2">
+                  <PatternDot pattern="csr" /> csr
+                </td>
+                <td>in browser</td>
+                <td className="text-right text-muted-foreground">—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1">
-        {patterns.map((pattern) => (
-          <Card
-            key={pattern.title}
-            className="hover:shadow-lg transition-shadow flex flex-col"
+      <div className="grid grid-cols-1 gap-3 pb-16 md:grid-cols-2">
+        {patterns.map((p) => (
+          <Link
+            key={p.key}
+            href={`/${p.key}`}
+            className="group relative block border border-border bg-card/60 p-4 transition-colors hover:bg-accent/40"
           >
-            <CardHeader className="pb-2">
-              <div className="flex items-start justify-between mb-1">
-                <div className="text-2xl">{pattern.icon}</div>
-                <Badge className={pattern.color} variant="outline">
-                  {pattern.title}
-                </Badge>
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-2 font-mono text-xs">
+                <PatternDot pattern={p.key} />
+                <span className={p.fgClass}>{p.label}</span>
+                <span className="text-muted-foreground">— {p.name}</span>
               </div>
-              <CardTitle className="text-lg">{pattern.fullName}</CardTitle>
-              <CardDescription className="text-xs">
-                {pattern.description}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2 flex-1 flex flex-col">
-              <div className="text-xs space-y-1 flex-1">
-                <div className="flex items-start gap-1">
-                  <span className="text-green-600 dark:text-green-400">✓</span>
-                  <p className="text-muted-foreground">
-                    {pattern.pros.join(" • ")}
-                  </p>
-                </div>
-                <div className="flex items-start gap-1">
-                  <span className="text-orange-600 dark:text-orange-400">
-                    ✗
-                  </span>
-                  <p className="text-muted-foreground">
-                    {pattern.cons.join(" • ")}
-                  </p>
-                </div>
-                <p className="text-muted-foreground pt-1">
-                  <span className="font-medium">Use:</span> {pattern.useCases}
-                </p>
-              </div>
+              <ArrowUpRight
+                className="size-3.5 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                strokeWidth={1.5}
+              />
+            </div>
 
-              <Link href={pattern.path} className="block">
-                <Button className="w-full" size="sm">
-                  View Demo →
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
+            <p className="mt-3 text-sm text-foreground/85">{p.tagline}</p>
+
+            <div className="mt-4 grid grid-cols-2 gap-4 font-mono text-[11px]">
+              <div>
+                <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                  pros
+                </div>
+                <ul className="mt-1 space-y-0.5">
+                  {p.pros.map((x) => (
+                    <li key={x} className="flex gap-1.5">
+                      <span className="text-emerald-600 dark:text-emerald-400">
+                        +
+                      </span>
+                      <span className="text-foreground/85">{x}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                  cons
+                </div>
+                <ul className="mt-1 space-y-0.5">
+                  {p.cons.map((x) => (
+                    <li key={x} className="flex gap-1.5">
+                      <span className="text-amber-600 dark:text-amber-400">
+                        −
+                      </span>
+                      <span className="text-foreground/85">{x}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-4 border-t border-dashed border-border pt-3 font-mono text-[11px] text-muted-foreground">
+              {p.use}
+            </div>
+          </Link>
         ))}
       </div>
-    </div>
+
+      <Section label="notes">
+        <p className="font-mono text-[11px] leading-relaxed text-muted-foreground">
+          dev mode renders everything dynamically. build + start to see ssg
+          freeze, isr revalidate on a 10-second window, and csr hydrate in the
+          browser.
+        </p>
+      </Section>
+
+      <div className="py-6 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
+        mit · 2026
+      </div>
+    </Shell>
   );
 }

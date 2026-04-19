@@ -4,57 +4,43 @@ import { useState, useEffect } from "react";
 import { RenderingDemo } from "@/components/rendering-demo";
 import { PatternInfo } from "@/components/pattern-info";
 import { FlowDiagram } from "@/components/flow-diagram";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { ThemeToggle } from "@/components/theme-toggle";
-import Link from "next/link";
+import { CodeBlock } from "@/components/code-block";
+import { Section, Shell, TopBar } from "@/components/site-shell";
+import { DemoHero } from "@/components/demo-hero";
 
 export default function CSRPage() {
-  const [timestamp, setTimestamp] = useState<string>("Loading...");
+  const [timestamp, setTimestamp] = useState<string>("—");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // This runs in the browser after the component mounts
     setTimestamp(new Date().toISOString());
     setMounted(true);
   }, []);
 
   return (
-    <div className="container mx-auto py-4 px-4 max-w-6xl min-h-screen flex flex-col">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">CSR - Client-Side Rendering</h1>
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <Link href="/">
-            <Button variant="outline" size="sm">
-              ← Back
-            </Button>
-          </Link>
-        </div>
-      </div>
+    <Shell>
+      <TopBar path="csr" />
+      <DemoHero pattern="csr" />
 
-      <Separator className="mb-4" />
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1">
+      <div className="grid grid-cols-1 gap-4 pb-10 lg:grid-cols-2">
         <div className="space-y-4">
-          <PatternInfo
-            title="CSR"
-            description="JS renders UI in the browser."
-            pattern="csr"
-            pros={["Highly interactive", "Rich UX"]}
-            cons={["Slower initial load", "Poor SEO"]}
-            useCases={["Dashboards", "Web apps", "Admin panels"]}
-          />
+          <Section label="pattern">
+            <PatternInfo
+              pattern="csr"
+              pros={["highly interactive", "rich ux"]}
+              cons={["slower first paint", "weaker seo"]}
+              useCases={["dashboards", "web apps", "admin panels"]}
+            />
+          </Section>
 
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">How CSR Works</h2>
+          <Section label="flow" title="shell → js → paint">
             <FlowDiagram pattern="csr" />
-          </div>
+          </Section>
 
-          <div className="bg-muted p-3 rounded-lg">
-            <p className="text-xs font-semibold mb-2">Code Example:</p>
-            <pre className="text-[10px] leading-tight">
-              <code>{`'use client'
+          <Section label="source" title="app/csr/page.tsx">
+            <CodeBlock
+              filename="app/csr/page.tsx"
+              code={`'use client'
 import { useState, useEffect } from 'react'
 
 export default function Page() {
@@ -63,32 +49,35 @@ export default function Page() {
     setData(new Date().toISOString())
   }, [])
   return <div>{data}</div>
-}`}</code>
-            </pre>
-          </div>
+}`}
+            />
+          </Section>
         </div>
 
         <div className="space-y-4">
-          {mounted ? (
-            <RenderingDemo
-              pattern="csr"
-              timestamp={timestamp}
-              renderLocation="client"
-            />
-          ) : (
-            <div className="bg-muted p-8 rounded-lg text-center text-muted-foreground text-sm">
-              Loading client-side content...
-            </div>
-          )}
+          <Section label="live" title="rendered in the browser">
+            {mounted ? (
+              <RenderingDemo
+                pattern="csr"
+                timestamp={timestamp}
+                renderLocation="client"
+              />
+            ) : (
+              <div className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+                <span className="inline-block size-1.5 animate-pulse rounded-full bg-muted-foreground" />
+                hydrating…
+              </div>
+            )}
+          </Section>
 
-          <div className="bg-muted p-4 rounded-lg">
-            <p className="text-xs text-muted-foreground">
-              💡 View page source - content not in HTML, rendered by JS in
-              browser.
+          <Section label="hint">
+            <p className="font-mono text-[11px] leading-relaxed text-muted-foreground">
+              view source: the timestamp is absent from initial html — javascript
+              fills it after hydration.
             </p>
-          </div>
+          </Section>
         </div>
       </div>
-    </div>
+    </Shell>
   );
 }

@@ -1,76 +1,90 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { PatternDot, patternMeta } from "@/components/site-shell";
 
 interface PatternInfoProps {
-  title: string;
-  description: string;
   pattern: "ssr" | "ssg" | "isr" | "csr";
   pros: string[];
   cons: string[];
   useCases: string[];
+  description?: string;
 }
 
 export function PatternInfo({
-  title,
-  description,
   pattern,
   pros,
   cons,
   useCases,
+  description,
 }: PatternInfoProps) {
-  const patternColors = {
-    ssr: "bg-chart-1/10 text-chart-1 border-chart-1",
-    ssg: "bg-chart-2/10 text-chart-2 border-chart-2",
-    isr: "bg-chart-5/10 text-chart-5 border-chart-5",
-    csr: "bg-chart-4/10 text-chart-4 border-chart-4",
-  };
-
+  const meta = patternMeta[pattern];
   return (
-    <Card>
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">{title}</CardTitle>
-          <Badge className={patternColors[pattern]} variant="outline">
-            {pattern.toUpperCase()}
-          </Badge>
+    <div className="space-y-4">
+      <div className="space-y-1">
+        <div className="flex items-center gap-2 font-mono text-xs">
+          <PatternDot pattern={pattern} />
+          <span className={meta.fgClass}>{meta.label}</span>
+          <span className="text-muted-foreground">— {meta.name}</span>
         </div>
-        <CardDescription className="text-sm">{description}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-2 text-xs">
-        <div>
-          <h4 className="font-semibold mb-1 flex items-center gap-1">
-            <span className="text-green-600 dark:text-green-400">✓</span>
-            {pros.map((pro, index) => (
-              <span key={index}>
-                {pro}
-                {index < pros.length - 1 ? " • " : ""}
-              </span>
-            ))}
-          </h4>
-        </div>
+        <p className="text-sm leading-relaxed text-foreground/90">
+          {description ?? meta.tagline}
+        </p>
+      </div>
 
-        <div>
-          <h4 className="font-semibold mb-1 flex items-center gap-1">
-            <span className="text-orange-600 dark:text-orange-400">✗</span>
-            {cons.map((con, index) => (
-              <span key={index}>
-                {con}
-                {index < cons.length - 1 ? " • " : ""}
-              </span>
-            ))}
-          </h4>
-        </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <List label="pros" items={pros} prefix="+" tone="ok" />
+        <List label="cons" items={cons} prefix="−" tone="warn" />
+      </div>
 
-        <div>
-          <h4 className="font-semibold mb-1">Use: {useCases.join(", ")}</h4>
-        </div>
-      </CardContent>
-    </Card>
+      <div>
+        <Label>use-cases</Label>
+        <ul className="mt-1.5 flex flex-wrap gap-1">
+          {useCases.map((u) => (
+            <li
+              key={u}
+              className="border border-border px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground"
+            >
+              {u.toLowerCase()}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function Label({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+      {children}
+    </span>
+  );
+}
+
+function List({
+  label,
+  items,
+  prefix,
+  tone,
+}: {
+  label: string;
+  items: string[];
+  prefix: string;
+  tone: "ok" | "warn";
+}) {
+  const toneCls =
+    tone === "ok"
+      ? "text-emerald-600 dark:text-emerald-400"
+      : "text-amber-600 dark:text-amber-400";
+  return (
+    <div>
+      <Label>{label}</Label>
+      <ul className="mt-1.5 space-y-1 font-mono text-xs">
+        {items.map((item) => (
+          <li key={item} className="flex gap-2">
+            <span className={`${toneCls} shrink-0`}>{prefix}</span>
+            <span className="text-foreground/85">{item.toLowerCase()}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
