@@ -1,12 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import {
-  Section,
-  Shell,
-  TopBar,
-  patternMeta,
-  PatternDot,
-} from "@/components/site-shell";
+import { TopBar, patternMeta, PatternDot } from "@/components/site-shell";
 
 const summary = {
   ssr: {
@@ -38,10 +32,11 @@ export default function Home() {
   }));
 
   return (
-    <Shell>
+    <div className="mx-auto flex min-h-svh max-w-6xl flex-col px-4">
       <TopBar />
 
-      <section className="grid grid-cols-1 gap-4 py-5 md:grid-cols-[1.1fr_1fr] md:py-6">
+      <main className="flex flex-1 flex-col gap-4 py-4 lg:gap-5 lg:py-5">
+        <section className="grid grid-cols-1 gap-4 md:grid-cols-[1.1fr_1fr]">
         <div className="space-y-2">
           <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
             <span className="size-1.5 rounded-full bg-emerald-500" />
@@ -106,14 +101,14 @@ export default function Home() {
             </tbody>
           </table>
         </div>
-      </section>
+        </section>
 
-      <div className="grid grid-cols-1 gap-2 pb-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid flex-1 grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
         {patterns.map((p) => (
           <Link
             key={p.key}
             href={`/${p.key}`}
-            className="group relative block border border-border bg-card/60 p-3 transition-colors hover:bg-accent/40"
+            className="group relative flex flex-col border border-border bg-card/60 p-3 transition-colors hover:bg-accent/40"
           >
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2 font-mono text-xs">
@@ -164,16 +159,17 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mt-2 border-t border-dashed border-border pt-2 font-mono text-[10px] text-muted-foreground">
+            <div className="mt-auto border-t border-dashed border-border pt-2 font-mono text-[10px] text-muted-foreground">
               {p.use}
             </div>
           </Link>
         ))}
-      </div>
+        </div>
 
-      <div className="pb-4 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
-        mit · 2026
-      </div>
-    </Shell>
+        <div className="pt-1 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
+          mit · 2026
+        </div>
+      </main>
+    </div>
   );
 }
